@@ -23,3 +23,45 @@
     margin-bottom: 1rem;
   }
 }
+
+.horizontalRow {
+  margin-top: 4rem;
+  margin-bottom: 4rem;
+  opacity: 0.1;
+  border: 1px solid var(--body);
+}
+
+.lastPublication {
+  font-style: italic !important;
+  margin-top: 1rem;
+}
+
+.navegate {
+  display: flex;
+  max-width: 720px;
+  align-items: center;
+  width: 100%;
+  margin-top: 0;
+  margin-bottom: 4rem;
+
+  p {
+    font-family: Inter;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 1rem;
+    line-height: 1.188rem;
+    letter-spacing: -0.031rem;
+    color: var(--highlight);
+  }
+
+  .navegateTitle {
+    font-weight: normal !important;
+    font-size: 1.125rem !important;
+    line-height: 1.375rem !important;
+    color: var(--heading) !important;
+  }
+
+  .navegateAnchor {
+    margin-top: 0 !important;
+  }
+}

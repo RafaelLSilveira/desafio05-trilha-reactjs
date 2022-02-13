@@ -28,10 +28,11 @@ interface PostPagination {
 
 interface HomeProps {
   postsPagination: PostPagination;
+  preview: boolean;
 }
 
 export default function Home(props: HomeProps): JSX.Element {
-  const { postsPagination } = props;
+  const { postsPagination, preview } = props;
 
   const [storePosts, setStorePosts] = useState(postsPagination);
 
@@ -67,7 +68,9 @@ export default function Home(props: HomeProps): JSX.Element {
           {storePosts.results.map(post => (
             <Link key={post.uid} href={`/post/${post.uid}`}>
               <a>
-                <strong>{post.data.title}</strong>
+                <strong className={commonStyles.title}>
+                  {post.data.title}
+                </strong>
                 <p>{post.data.subtitle}</p>
                 <div className={commonStyles.postInfo}>
                   <time>
@@ -96,16 +99,27 @@ export default function Home(props: HomeProps): JSX.Element {
           ) : null}
         </div>
       </main>
+      {preview && (
+        <aside className={commonStyles.previewMode}>
+          <Link href="/api/exit-preview">
+            <a>Sair do modo Preview</a>
+          </Link>
+        </aside>
+      )}
     </>
   );
 }
 
-export const getStaticProps: GetStaticProps<HomeProps> = async () => {
+export const getStaticProps: GetStaticProps<HomeProps> = async ({
+  preview = false,
+  previewData,
+}) => {
   const prismic = getPrismicClient();
 
   const postsResponse = await prismic.query(
     [Prismic.predicates.at('document.type', 'posts')],
     {
+      ref: previewData?.ref ?? null,
       fetch: ['posts.title', 'posts.subtitle', 'posts.author'],
       pageSize: 2,
       orderings: '[posts.first_publication_date desc]',
@@ -130,6 +144,7 @@ export const getStaticProps: GetStaticProps<HomeProps> = async () => {
         next_page: postsResponse.next_page,
         results: postsResult,
       },
+      preview,
     },
   };
 };
